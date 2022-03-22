@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!--引用 layui.css，注意路径要写自己项目的-->
+    <link rel="stylesheet" href="/js/layui-v2.5.5/css/layui.css" media="all"/>
+
+</head>
+<body>
+
+<div id="app">
+    <form class="layui-form" lay-filter="userForm">
+        <div class="layui-form-item">
+
+            <div class="layui-inline">
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="userName" placeholder="请输入名称"
+                           autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">地址</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="userAddress" placeholder="请输入内容"
+                           autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">查询</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<table id="tb-user" lay-filter="tb-user"></table>
+<div id="laypage-user"></div>
+
+</body>
+
+<!--引用 layui.js和jQuery，注意路径要写自己项目的-->
+<script src="/js/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script src="/js/layui-v2.5.5/layui.js"></script>
+<script src="/js/vue.min.js"></script>
+<script type="text/javascript">
+
+    //     data: {
+    //         tableData:[],
+    //         currPage: 1,
+    //         pageSize:10
+    //     },
+    //     methods: {
+    //         getParam: function () {
+    //             var param = {};
+    //             param.currPage = this.currPage;
+    //             param.pageSize = this.pageSize;
+    //             return param;
+    //         },
+    //         search: function () {
+    //             this.currPage = 1;
+    //             this.getData();
+    //         },
+    //         getData: function(){
+    //             var that = this;
+    //             var param = that.getParam();
+    //             $.ajax({
+    //                 type: 'get',
+    //                 url: '/user/list',
+    //                 dataType: 'json',
+    //                 data: param,
+    //                 success: function (data) {
+    //                     console.log(data);
+    //                 }
+    //             });
+    //         },
+    //         mounted: function(){
+    //             console.log("Vue实例...");
+    //             this.getData();
+    //         },
+    //         created: function(){
+    //             console.log("Vue实例...");
+    //         }
+    //     }
+    //
+    // });
+
+    var vm;
+
+    layui.use(['table', 'form', 'laypage'], function () {
+        var table = layui.table;
+        var laypage = layui.laypage;
+        var form = layui.form;
+        console.log("layui实例...");
+
+        vm = new Vue({
+            el: '#app',
+            data:{},
+            methods:{
+                mounted : function(){
+                    alert("Vue实例...");
+                }
+            }
+
+        });
+
+        //第一个实例
+        table.render({
+            elem: '#tb-user'
+            , height: 312
+            , url: '/user/list'
+            , even: true
+            , count: 53
+            // , page: {//支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+            //     layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'] //自定义分页布局
+            //     ,curr: 1 //设定初始在第 5 页
+            //     ,count: 53 //只显示 1 个连续页码
+            //     ,first: false //不显示首页
+            //     ,last: false //不显示尾页
+            // }
+            , cols: [    //表头
+                [
+                    {field: 'userId', title: '用户ID', width: 150}
+                    , {field: 'userName', title: '用户名', width: 150}
+                    , {field: 'userDate', title: '时间', width: 200}
+                    , {field: 'userAddress', title: '地址', width: 300}
+                ]
+            ]
+            , parseData: function (res) { //res 即为原始返回的数据
+                console.log(res.data.list);
+                console.log(res.code);
+                return {
+                    "code": res.code,
+                    "data": res.data.list //解析数据列表
+                };
+            }
+        });
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            //获取表单区域所有值
+            var data1 = form.val("userForm");
+            console.log("form表单中的数据：" + data1);
+            console.log(data1.userName);
+            layer.msg("表单按钮...");
+            console.log("formDemo：" + data.field);
+            console.log(data.field.userName);
+
+            table.reload('tb-user', {
+                page: {
+                    curr: 1
+                },
+                where: {
+                    userName: data1.userName,
+                    userAddress: data1.userAddress
+                },
+                url: '/user/sel'
+            });
+
+            return false;
+        });
+
+        laypage.render({
+            elem: 'laypage-user',
+            limit: 10,
+            count: 53,
+            curr: 1,
+            layout: ['limit', 'prev', 'page', 'next', 'skip'],
+            prev: '上一页',
+            next: '下一页',
+            start: '首页',
+            end: '尾页',
+            jump: function () {
+                //后端逻辑
+            }
+
+        });
+
+    });
+</script>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!--引用 layui.css，注意路径要写自己项目的-->
+    <link rel="stylesheet" href="js/layui-v2.5.5/css/layui.css" media="all"/>
+
+    <!--引用 layui.js和jQuery，注意路径要写自己项目的-->
+    <script src="js/layui-v2.5.5/layui.js"></script>
+    <script src="js/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+
+<div id="app"></div>
+
+</body>
+
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data:{},
+        created: function () {
+            alert("hello");
+            console.log('这是一个Vue实例')
+        }
+    })
+
+</script>
+
+</html>
