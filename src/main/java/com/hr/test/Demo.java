@@ -17,6 +17,7 @@ public class Demo {
     public void test(){
 
         System.out.println("测试分支一代码提交");
+        System.out.println("测试分支二代码提交");
 
     }
 
