@@ -21,5 +21,11 @@ public class Demo {
 
     }
 
+    public void dev(){
+
+        System.out.println("dev分支一代码提交");
+
+    }
+
 
 }
