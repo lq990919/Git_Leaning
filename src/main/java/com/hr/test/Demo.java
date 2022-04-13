@@ -25,6 +25,7 @@ public class Demo {
 
         System.out.println("dev分支一代码提交");
         System.out.println("dev---->test分支二代码提交");
+        System.out.println("dev---->test");
     }
 
 
