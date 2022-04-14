@@ -31,6 +31,8 @@ public class Demo {
 
     public void merge(){
         System.out.println("merge分支一代码提交");
+        System.out.println("merge分支二代码提交");
+        System.out.println("test----->dev");
     }
 
 
